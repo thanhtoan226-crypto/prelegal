@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Mutual Non-Disclosure Agreement",
+    "description": "Common Paper standard Mutual NDA, created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "Mutual-NDA.md",
+    "source": "https://github.com/CommonPaper/Mutual-NDA"
+  },
+  {
+    "name": "Mutual NDA Cover Page",
+    "description": "Cover page for the Common Paper Mutual NDA, used to finalize and execute the agreement.",
+    "filename": "Mutual-NDA-coverpage.md",
+    "source": "https://github.com/CommonPaper/Mutual-NDA"
+  },
+  {
+    "name": "Cloud Service Agreement",
+    "description": "Common Paper standard Cloud Service Agreement (CSA), an easy agreement for selling and buying cloud software and SaaS products, created by a committee of over 40 attorneys.",
+    "filename": "CSA.md",
+    "source": "https://github.com/CommonPaper/CSA"
+  },
+  {
+    "name": "Design Partner Agreement",
+    "description": "Common Paper standard Design Partner Agreement, created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "design-partner-agreement.md",
+    "source": "https://github.com/CommonPaper/Design-Partner-Agreement"
+  },
+  {
+    "name": "Service Level Agreement",
+    "description": "Common Paper Service Level Agreement (SLA), designed to be used with the Common Paper Cloud Service Agreement (CSA), created by a committee of over 40 attorneys.",
+    "filename": "sla.md",
+    "source": "https://github.com/CommonPaper/SLA"
+  },
+  {
+    "name": "Professional Services Agreement",
+    "description": "Common Paper standard Professional Services Agreement (PSA), created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "psa.md",
+    "source": "https://github.com/CommonPaper/PSA"
+  },
+  {
+    "name": "Data Processing Agreement",
+    "description": "Common Paper standard Data Processing Agreement (DPA), created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "DPA.md",
+    "source": "https://github.com/CommonPaper/DPA"
+  },
+  {
+    "name": "Software License Agreement",
+    "description": "Common Paper standard Software License Agreement, created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "Software-License-Agreement.md",
+    "source": "https://github.com/CommonPaper/Software-License-Agreement"
+  },
+  {
+    "name": "Partnership Agreement",
+    "description": "Common Paper standard Partnership Agreement, created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "Partnership-Agreement.md",
+    "source": "https://github.com/CommonPaper/Partnership-Agreement"
+  },
+  {
+    "name": "Pilot Agreement",
+    "description": "Common Paper standard Pilot Agreement for short-term contracts allowing prospective customers to test a product or service before committing to a longer-term deal.",
+    "filename": "Pilot-Agreement.md",
+    "source": "https://github.com/CommonPaper/Pilot-Agreement"
+  },
+  {
+    "name": "Business Associate Agreement",
+    "description": "Common Paper standard Business Associate Agreement (BAA), created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "BAA.md",
+    "source": "https://github.com/CommonPaper/BAA"
+  },
+  {
+    "name": "AI Addendum",
+    "description": "Common Paper standard AI Addendum, created by a committee of over 40 attorneys representing technology vendors, procurement teams, boutique firms, and Big Law.",
+    "filename": "AI-Addendum.md",
+    "source": "https://github.com/CommonPaper/AI-Addendum"
+  }
+]
