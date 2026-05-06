@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+__pycache__
+.env
+.git
+*.db
+*.sqlite3
+.claude

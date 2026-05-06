@@ -129,7 +129,7 @@ export function generatePdfHtml(data: NDAFormData): string {
 
 <h2 style="font-size: 14pt; margin-top: 20px; margin-bottom: 8px;">USING THIS MUTUAL NON-DISCLOSURE AGREEMENT</h2>
 
-<p>This Mutual Non-Disclosure Agreement (the "MNDA") consists of: (1) this Cover Page ("<strong>Cover Page</strong>") and (2) the Common Paper Mutual NDA Standard Terms Version 1.0 ("<strong>Standard Terms</strong>") identical to those posted at <a href="https://commonpaper.com/standards/mutual-nda/1.0" style="color: #4f46e5;">commonpaper.com/standards/mutual-nda/1.0</a>. Any modifications of the Standard Terms should be made on the Cover Page, which will control over conflicts with the Standard Terms.</p>
+<p>This Mutual Non-Disclosure Agreement (the "MNDA") consists of: (1) this Cover Page ("<strong>Cover Page</strong>") and (2) the Common Paper Mutual NDA Standard Terms Version 1.0 ("<strong>Standard Terms</strong>") identical to those posted at <a href="https://commonpaper.com/standards/mutual-nda/1.0" style="color: #209dd7;">commonpaper.com/standards/mutual-nda/1.0</a>. Any modifications of the Standard Terms should be made on the Cover Page, which will control over conflicts with the Standard Terms.</p>
 
 <h3 style="font-size: 12pt; margin-top: 16px; margin-bottom: 4px;">Purpose</h3>
 <p>${purpose}</p>
@@ -169,7 +169,7 @@ export function generatePdfHtml(data: NDAFormData): string {
   </tbody>
 </table>
 
-<p style="font-size: 9pt; color: #6b7280; margin-top: 16px;">Common Paper Mutual Non-Disclosure Agreement (Version 1.0) free to use under <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #4f46e5;">CC BY 4.0</a>.</p>
+<p style="font-size: 9pt; color: #6b7280; margin-top: 16px;">Common Paper Mutual Non-Disclosure Agreement (Version 1.0) free to use under <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #209dd7;">CC BY 4.0</a>.</p>
 
 <hr style="border: none; border-top: 1px solid #d1d5db; margin: 24px 0;"/>
 
@@ -197,7 +197,7 @@ export function generatePdfHtml(data: NDAFormData): string {
 
 <p><strong>11. General</strong>. Neither party has an obligation under this MNDA to disclose Confidential Information to the other or proceed with any proposed transaction. Neither party may assign this MNDA without the prior written consent of the other party, except that either party may assign this MNDA in connection with a merger, reorganization, acquisition or other transfer of all or substantially all its assets or voting securities. Any assignment in violation of this Section is null and void. This MNDA will bind and inure to the benefit of each party's permitted successors and assigns. Waivers must be signed by the waiving party's authorized representative and cannot be implied from conduct. If any provision of this MNDA is held unenforceable, it will be limited to the minimum extent necessary so the rest of this MNDA remains in effect. This MNDA (including the Cover Page) constitutes the entire agreement of the parties with respect to its subject matter, and supersedes all prior and contemporaneous understandings, agreements, representations, and warranties, whether written or oral, regarding such subject matter. This MNDA may only be amended, modified, waived, or supplemented by an agreement in writing signed by both parties. Notices, requests and approvals under this MNDA must be sent in writing to the email or postal addresses on the Cover Page and are deemed delivered on receipt. This MNDA may be executed in counterparts, including electronic copies, each of which is deemed an original and which together form the same agreement.</p>
 
-<p style="font-size: 9pt; color: #6b7280; margin-top: 16px;">Common Paper Mutual Non-Disclosure Agreement <a href="https://commonpaper.com/standards/mutual-nda/1.0/" style="color: #4f46e5;">Version 1.0</a> free to use under <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #4f46e5;">CC BY 4.0</a>.</p>
+<p style="font-size: 9pt; color: #6b7280; margin-top: 16px;">Common Paper Mutual Non-Disclosure Agreement <a href="https://commonpaper.com/standards/mutual-nda/1.0/" style="color: #209dd7;">Version 1.0</a> free to use under <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #209dd7;">CC BY 4.0</a>.</p>
 
 </div>`;
 }

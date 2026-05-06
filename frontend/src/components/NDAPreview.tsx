@@ -100,7 +100,10 @@ export default function NDAPreview({ data }: Props) {
         <button
           onClick={handleDownload}
           disabled={downloading || !ready}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 text-sm font-medium"
+          className="px-4 py-2 text-white rounded-md disabled:opacity-50 text-sm font-medium transition-colors cursor-pointer"
+          style={{ backgroundColor: "#753991" }}
+          onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = "#5f2d75")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#753991")}
         >
           {downloading ? "Generating PDF..." : "Download PDF"}
         </button>

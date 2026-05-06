@@ -4,21 +4,23 @@ import { useState } from "react";
 import Link from "next/link";
 import NDAForm from "@/components/NDAForm";
 import NDAPreview from "@/components/NDAPreview";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { NDAFormData, createDefaultFormData } from "@/lib/types";
 
-export default function NDACreator() {
+function NDACreatorContent() {
   const [formData, setFormData] = useState<NDAFormData>(createDefaultFormData);
   const [showPreview, setShowPreview] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-gray-200 bg-white px-6 py-3 flex items-center justify-between">
-        <Link href="/" className="text-lg font-bold text-indigo-600 hover:text-indigo-700">
+        <Link href="/" className="text-lg font-bold hover:opacity-80 transition-opacity" style={{ color: "#209dd7" }}>
           Prelegal
         </Link>
         <h1 className="text-sm font-medium text-gray-600">Mutual NDA Creator</h1>
         <button
-          className="md:hidden px-3 py-1.5 text-sm rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
+          className="md:hidden px-3 py-1.5 text-sm rounded-md text-white"
+          style={{ backgroundColor: "#753991" }}
           onClick={() => setShowPreview(!showPreview)}
         >
           {showPreview ? "Edit Form" : "Preview"}
@@ -34,5 +36,13 @@ export default function NDACreator() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function NDACreator() {
+  return (
+    <ProtectedRoute>
+      <NDACreatorContent />
+    </ProtectedRoute>
   );
 }
