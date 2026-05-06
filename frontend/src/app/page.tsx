@@ -44,7 +44,7 @@ function HomeContent() {
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#5f2d75")}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#753991")}
             >
-              Create a Mutual NDA
+              Create a Mutual NDA with AI
             </Link>
           </div>
         </div>
