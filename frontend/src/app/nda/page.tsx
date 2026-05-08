@@ -70,8 +70,8 @@ function NDACreatorContent() {
   const [showPreview, setShowPreview] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-gray-200 bg-white px-6 py-3 flex items-center justify-between">
+    <div className="h-screen flex flex-col overflow-hidden">
+      <header className="shrink-0 border-b border-gray-200 bg-white px-6 py-3 flex items-center justify-between">
         <Link
           href="/"
           className="text-lg font-bold hover:opacity-80 transition-opacity"
@@ -89,8 +89,8 @@ function NDACreatorContent() {
         </button>
       </header>
 
-      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        <div className={`md:w-1/2 overflow-hidden ${showPreview ? "hidden md:flex" : "flex flex-col"}`}>
+      <div className="flex-1 min-h-0 flex flex-col md:flex-row">
+        <div className={`md:w-1/2 min-h-0 ${showPreview ? "hidden md:flex" : "flex flex-col"}`}>
           <ChatPanel messages={messages} onSend={handleSend} isLoading={isLoading} />
         </div>
         <div
