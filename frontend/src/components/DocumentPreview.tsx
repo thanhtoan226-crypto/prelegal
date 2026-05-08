@@ -1,26 +1,17 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
-import { NDAFormData } from "@/lib/types";
-import { generateFullDocument, generatePdfHtml } from "@/lib/template";
 
 interface Props {
-  data: NDAFormData;
+  markdown: string;
+  pdfHtml: string;
+  docName: string;
 }
 
-export default function NDAPreview({ data }: Props) {
-  const previewRef = useRef<HTMLDivElement>(null);
+export default function DocumentPreview({ markdown, pdfHtml, docName }: Props) {
   const pdfContainerRef = useRef<HTMLDivElement | null>(null);
   const [downloading, setDownloading] = useState(false);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
-  const markdown = generateFullDocument(data);
-  const pdfHtml = generatePdfHtml(data);
 
   const handleDownload = useCallback(async () => {
     if (downloading) return;
@@ -32,13 +23,11 @@ export default function NDAPreview({ data }: Props) {
         import("jspdf"),
       ]);
 
-      // Create a temporary off-screen container with clean inline styles
-      // This avoids html2canvas parsing Tailwind CSS var() which causes crashes
       const container = document.createElement("div");
       container.style.position = "absolute";
       container.style.left = "-9999px";
       container.style.top = "0";
-      container.style.width = "794px"; // A4 width at 96dpi
+      container.style.width = "794px";
       container.style.background = "white";
       container.innerHTML = pdfHtml;
       document.body.appendChild(container);
@@ -79,9 +68,8 @@ export default function NDAPreview({ data }: Props) {
         heightLeft -= pdfHeight - 30;
       }
 
-      pdf.save("Mutual-NDA.pdf");
+      pdf.save(`${docName}.pdf`);
     } catch (err) {
-      // Clean up the temp container if it still exists
       if (pdfContainerRef.current && pdfContainerRef.current.parentNode) {
         pdfContainerRef.current.parentNode.removeChild(pdfContainerRef.current);
         pdfContainerRef.current = null;
@@ -91,7 +79,7 @@ export default function NDAPreview({ data }: Props) {
     } finally {
       setDownloading(false);
     }
-  }, [downloading, pdfHtml]);
+  }, [downloading, pdfHtml, docName]);
 
   return (
     <div className="flex flex-col h-full">
@@ -99,7 +87,7 @@ export default function NDAPreview({ data }: Props) {
         <h2 className="text-lg font-semibold text-gray-800">Document Preview</h2>
         <button
           onClick={handleDownload}
-          disabled={downloading || !ready}
+          disabled={downloading}
           className="px-4 py-2 text-white rounded-md disabled:opacity-50 text-sm font-medium transition-colors cursor-pointer"
           style={{ backgroundColor: "#753991" }}
           onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = "#5f2d75")}
@@ -108,10 +96,7 @@ export default function NDAPreview({ data }: Props) {
           {downloading ? "Generating PDF..." : "Download PDF"}
         </button>
       </div>
-      <div
-        ref={previewRef}
-        className="prose prose-sm max-w-none bg-white p-8 rounded-lg border border-gray-200 overflow-y-auto flex-1 shadow-inner"
-      >
+      <div className="prose prose-sm max-w-none bg-white p-8 rounded-lg border border-gray-200 overflow-y-auto flex-1 shadow-inner">
         <ReactMarkdown>{markdown}</ReactMarkdown>
       </div>
     </div>

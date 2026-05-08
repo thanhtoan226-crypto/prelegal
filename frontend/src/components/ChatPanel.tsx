@@ -12,12 +12,21 @@ interface Props {
 export default function ChatPanel({ messages, onSend, isLoading }: Props) {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const prevLoadingRef = useRef(isLoading);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
+
+  useEffect(() => {
+    if (prevLoadingRef.current && !isLoading) {
+      inputRef.current?.focus();
+    }
+    prevLoadingRef.current = isLoading;
+  }, [isLoading]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +69,7 @@ export default function ChatPanel({ messages, onSend, isLoading }: Props) {
         className="shrink-0 border-t border-gray-200 p-3 flex gap-2 bg-white"
       >
         <input
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."

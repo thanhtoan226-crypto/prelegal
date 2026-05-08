@@ -20,6 +20,7 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     messages: list[ChatMessage]
     current_fields: dict[str, Any]
+    doc_type: str
 
 
 class ChatResponse(BaseModel):
