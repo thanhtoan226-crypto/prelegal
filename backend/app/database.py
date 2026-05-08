@@ -25,6 +25,8 @@ def get_db():
 def init_db():
     import os
 
+    from app.models import User, Document  # noqa: F401 — register models with Base before create_all
+
     db_dir = os.path.dirname(settings.DATABASE_URL.replace("sqlite:///", ""))
     if db_dir:
         os.makedirs(db_dir, exist_ok=True)
@@ -32,7 +34,6 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
     # Seed demo user for fake auth (PRE-4)
-    from app.models import User
 
     db = SessionLocal()
     try:
