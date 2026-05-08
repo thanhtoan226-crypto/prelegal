@@ -16,6 +16,8 @@ COPY backend/pyproject.toml backend/uv.lock* ./
 RUN uv sync --frozen --no-dev 2>/dev/null || uv sync --no-dev
 
 COPY backend/app ./app
+COPY templates/ ./templates/
+COPY catalog.json ./catalog.json
 COPY --from=frontend-build /build/out ./static
 
 RUN mkdir -p /app/data

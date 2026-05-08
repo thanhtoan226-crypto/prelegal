@@ -1,14 +1,8 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 
-from app.llm import (
-    NDAChatResponse,
-    NDAFieldExtract,
-    PartyExtract,
-    _describe_field_status,
-    _flatten,
-)
-from app.schemas import ChatMessage, ChatRequest, ChatResponse
+from app.llm import ChatResponse, _describe_field_status, _flatten, build_opening_message
+from app.schemas import ChatMessage, ChatRequest
 
 
 def test_flatten_simple():
@@ -45,7 +39,7 @@ def test_describe_field_status_filled():
     assert "party1.printName: EMPTY" in result
 
 
-def test_nda_chat_response_model():
+def test_chat_response_model():
     data = {
         "message": "Great! What's the company name?",
         "fields": {
@@ -53,96 +47,129 @@ def test_nda_chat_response_model():
             "governingLaw": None,
         },
     }
-    result = NDAChatResponse.model_validate(data)
+    result = ChatResponse.model_validate(data)
     assert result.message == "Great! What's the company name?"
-    assert result.fields.purpose == "Evaluating a partnership"
-    assert result.fields.governingLaw is None
+    assert result.fields["purpose"] == "Evaluating a partnership"
+    assert result.fields["governingLaw"] is None
 
 
-def test_nda_chat_response_with_party():
+def test_chat_response_empty_fields():
     data = {
-        "message": "Got it!",
-        "fields": {
-            "party1": {
-                "company": "Acme Corp",
-                "printName": None,
-            }
-        },
+        "message": "Hello!",
+        "fields": {},
     }
-    result = NDAChatResponse.model_validate(data)
-    assert result.fields.party1 is not None
-    assert result.fields.party1.company == "Acme Corp"
-    assert result.fields.party1.printName is None
+    result = ChatResponse.model_validate(data)
+    assert result.message == "Hello!"
+    assert result.fields == {}
 
 
-def test_nda_field_extract_exclude_none():
-    extract = NDAFieldExtract(purpose="Test", governingLaw="Delaware")
-    dumped = extract.model_dump(exclude_none=True)
-    assert dumped == {"purpose": "Test", "governingLaw": "Delaware"}
-
-
-def test_nda_field_extract_all_none():
-    extract = NDAFieldExtract()
-    dumped = extract.model_dump(exclude_none=True)
-    assert dumped == {}
+def test_build_opening_message():
+    msg = build_opening_message("mutual-nda")
+    assert "Mutual Non-Disclosure Agreement" in msg
+    assert "parties" in msg.lower() or "party" in msg.lower()
 
 
 def test_chat_request_schema():
     req = ChatRequest(
         messages=[ChatMessage(role="user", content="Hello")],
         current_fields={"purpose": "Test"},
+        doc_type="mutual-nda",
     )
     assert len(req.messages) == 1
     assert req.messages[0].content == "Hello"
     assert req.current_fields["purpose"] == "Test"
+    assert req.doc_type == "mutual-nda"
+
+
+def test_chat_request_requires_doc_type():
+    with pytest.raises(Exception):
+        ChatRequest(
+            messages=[ChatMessage(role="user", content="Hello")],
+            current_fields={},
+        )
 
 
 def test_chat_endpoint_empty_messages_returns_opening():
-    """When messages is empty, the endpoint should return the opening message."""
-    from app.routers.chat import OPENING_MESSAGE
-
-    # Directly test the opening message logic without needing the full app
-    assert "Mutual Non-Disclosure Agreement" in OPENING_MESSAGE
-    assert "parties" in OPENING_MESSAGE.lower()
-
-
-def test_chat_endpoint_with_mock_llm():
-    """Test the chat endpoint with a mocked LLM call."""
     from fastapi import FastAPI, Depends
     from fastapi.testclient import TestClient
     from app.deps import get_current_user
     from app.schemas import UserResponse
-
-    test_app = FastAPI()
     from app.routers.chat import router
 
+    test_app = FastAPI()
     test_app.include_router(router)
 
     fake_user = UserResponse(id=1, email="demo@prelegal.com")
     test_app.dependency_overrides[get_current_user] = lambda: fake_user
 
-    mock_response = NDAChatResponse(
+    client = TestClient(test_app)
+    response = client.post(
+        "/api/chat",
+        json={
+            "messages": [],
+            "current_fields": {},
+            "doc_type": "mutual-nda",
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "Mutual Non-Disclosure Agreement" in data["message"]
+
+
+def test_chat_endpoint_with_mock_llm():
+    from fastapi import FastAPI, Depends
+    from fastapi.testclient import TestClient
+    from app.deps import get_current_user
+    from app.schemas import UserResponse
+    from app.routers.chat import router
+
+    test_app = FastAPI()
+    test_app.include_router(router)
+
+    fake_user = UserResponse(id=1, email="demo@prelegal.com")
+    test_app.dependency_overrides[get_current_user] = lambda: fake_user
+
+    mock_response = ChatResponse(
         message="Great! And what's the other company?",
-        fields=NDAFieldExtract(party1=PartyExtract(company="Acme Corp")),
+        fields={"party1.company": "Acme Corp"},
     )
 
-    with patch("app.routers.chat.call_nda_chat", new_callable=AsyncMock, return_value=mock_response):
+    with patch("app.routers.chat.call_doc_chat", new_callable=AsyncMock, return_value=mock_response):
         client = TestClient(test_app)
         response = client.post(
             "/api/chat",
             json={
                 "messages": [{"role": "user", "content": "I'm with Acme Corp"}],
                 "current_fields": {"purpose": "", "governingLaw": ""},
+                "doc_type": "mutual-nda",
             },
         )
         assert response.status_code == 200
         data = response.json()
         assert data["message"] == "Great! And what's the other company?"
-        assert "party1" in data["fields"]
-        assert data["fields"]["party1"]["company"] == "Acme Corp"
+        assert data["fields"]["party1.company"] == "Acme Corp"
 
 
-def test_party_extract_model():
-    party = PartyExtract(company="Acme Corp", printName="John Doe")
-    dumped = party.model_dump(exclude_none=True)
-    assert dumped == {"company": "Acme Corp", "printName": "John Doe"}
+def test_chat_endpoint_invalid_doc_type():
+    from fastapi import FastAPI, Depends
+    from fastapi.testclient import TestClient
+    from app.deps import get_current_user
+    from app.schemas import UserResponse
+    from app.routers.chat import router
+
+    test_app = FastAPI()
+    test_app.include_router(router)
+
+    fake_user = UserResponse(id=1, email="demo@prelegal.com")
+    test_app.dependency_overrides[get_current_user] = lambda: fake_user
+
+    client = TestClient(test_app)
+    response = client.post(
+        "/api/chat",
+        json={
+            "messages": [],
+            "current_fields": {},
+            "doc_type": "nonexistent-doc",
+        },
+    )
+    assert response.status_code == 404

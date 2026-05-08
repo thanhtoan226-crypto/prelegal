@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.database import init_db
-from app.routers import auth, chat, health
+from app.routers import auth, catalog, chat, health
 
 
 @asynccontextmanager
@@ -19,6 +19,7 @@ app = FastAPI(title="Prelegal", lifespan=lifespan)
 app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(chat.router)
+app.include_router(catalog.router)
 
 
 @app.exception_handler(404)
